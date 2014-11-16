@@ -1,5 +1,7 @@
 import shutil
 import os
+import collections
+
 rootFolder = "/home/jedi/Downloads/"
 #for root file of folder move files individualy
 #for folders do antoher thing(move entire folders based on file paths), ask for confirms
@@ -33,23 +35,28 @@ def move(f, where):
 
 def doesContainFolders(f):
     fileList = os.listdir(f)
-    files = [name for name in fileList if not os.path.isfile(f + name)]
-    if len(files) == 0:
+    dirs  = [name for name in fileList if  os.path.isdir(f + name)]
+    if len(dirs) == 0:
         return False
     return True
 def get_directory_file_stats(directory):
+    print directory
+   # print "going into " + directory
     fileList = os.listdir(directory)
-    files = [name for name in fileList if os.path.isfile(rootFolder + name)]
-    directories = [name for name in fileList if not os.path.isfile(rootFolder + name)]
+    files = [name for name in fileList if os.path.isfile(directory + name)]
+    directories = [name for name in fileList if  os.path.isdir(directory + name)]
     stats = []
     for f in files:
         root, ext = os.path.splitext(f)
-        stats += ext
+        stats.append(ext)
 
     if doesContainFolders(directory):
+        print directories
         for childDir in directories:
-           stats +=  get_directory_file_stats(directory + childDir + "/")
+            stats +=  get_directory_file_stats(directory + childDir + "/")
 
     return stats
 
-print get_directory_file_stats(rootFolder )
+#print get_directory_file_stats(rootFolder )
+#print get_directory_file_stats(rootFolder )
+print collections.Counter(get_directory_file_stats(rootFolder ))
