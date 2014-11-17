@@ -1,3 +1,9 @@
+'''
+Script that organizes my ~./Downloads 
+Moves files and folders into Music, Pictures and Videos
+
+'''
+
 import shutil
 import os
 import collections
