@@ -40,23 +40,39 @@ def doesContainFolders(f):
         return False
     return True
 def get_directory_file_stats(directory):
+    #gets a counter tuple of extensions + filesize for a directory
+    #goes into all subfolders of directory
     print directory
-   # print "going into " + directory
     fileList = os.listdir(directory)
     files = [name for name in fileList if os.path.isfile(directory + name)]
     directories = [name for name in fileList if  os.path.isdir(directory + name)]
     stats = []
     for f in files:
+        #get extension and filesize for each file
         root, ext = os.path.splitext(f)
-        stats.append(ext)
-
+        fileSize = os.path.getsize(directory + f)
+        stats.append((ext, fileSize))
+        
     if doesContainFolders(directory):
+        #call itself an all folders inside
         print directories
         for childDir in directories:
             stats +=  get_directory_file_stats(directory + childDir + "/")
 
-    return stats
+    return collections.Counter(stats)
+
+
+def getSubFolders(folder):
+    fileList = os.listdir(folder)
+    suvfolders = [name for name in fileList if  os.path.isdir(directory + name)]
+    return subfolders 
+def organizeSubFolders(folder, confirm =True):
+    #moves whole subfolders of a folder around based on number of files in subfolders
+    #confirm -> ask for confirmation of folder moving
+    subFolders = getSubFolders(folder)
+    for subFolder in subFolders:
+        fileStats = get_directory_file_stats(subfolder)
 
 #print get_directory_file_stats(rootFolder )
 #print get_directory_file_stats(rootFolder )
-print collections.Counter(get_directory_file_stats(rootFolder ))
+print get_directory_file_stats(rootFolder )
